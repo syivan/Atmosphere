@@ -1,0 +1,20 @@
+{
+  "name": "atmosphere",
+  "version": "1.0.0",
+  "description": "Weather and Music on your fingertips",
+  "main": "app.js",
+  "scripts": {
+    "build": "node app.js"
+  },
+  "keywords": [
+    "node",
+    "js",
+    "music",
+    "weather"
+  ],
+  "author": "ivan sy",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

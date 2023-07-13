@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Ivan Sy">
+    <title>Atmosphere</title>
+    <link rel="stylesheet" href="https://bootswatch.com/5/journal/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-dark bg-primary mb-3">
+        <div class="container">
+            <a class="navbar-brand" href="#">Atmosphere</a>
+        </div>
+    </nav>
+
+    <div>
+        <ul class="nav nav-tabs" id="item" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" data-bs-toggle="tab" href="#" aria-selected="true" role="tab">Home</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" data-bs-toggle="tab" href="#weather" aria-selected="false" role="tab"
+                    tabindex="-1">Weather</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" href="#music" aria-selected="false" tabindex="-1" role="tab">Music</a>
+            </li>
+        </ul>
+        <br>
+        <div class="container searchContainer">
+            <div class="search card card-body">
+                <h1>How's the Weather in Where?</h1>
+                <p class="lead">Enter a location:</p>
+                <form class="d-flex">
+                    <input class="form-control me-sm-2" type="search" placeholder="Search" id="location">
+                    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+        <br>
+        <div id="content">
+
+        </div>
+    </div>
+
+    <script>
+
+        class Weather {
+            constructor() {
+                this.api_key = "6b8a18e5d8b44dfa8d65a91235fc4727";
+            }
+
+            async getWeather(location) {
+                const areaResponse = await fetch(`api.openweathermap.org/data/2.5/forecast?id=524901&appid=${this.api_key}`);
+                const areaData = await areaResponse.json();
+                return { areaData };
+            }
+
+
+        }
+
+        $(document).ready(function () {
+            $("#item li").click(function (e) {
+                $("#item .active").removeClass("active");
+                $(e.target).addClass("active");
+                $(e.target).prop("aria-selected", "true");
+
+            });
+        });
+
+        weather = new Weather;
+
+        weather.get
+    </script>
+</body>
+
+</html>
