@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Ivan Sy">
+    <title>Atmosphere</title>
+    <link rel="stylesheet" href="https://bootswatch.com/5/journal/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-dark bg-primary mb-3">
+        <div class="container">
+            <a class="navbar-brand" href="#">Atmosphere</a>
+        </div>
+    </nav>
+
+    <div class="container mainContainer">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" aria-selected="true" role="tab"
+                    aria-controls="home">Home</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="weather-tab" data-toggle="tab" href="#weatherPanel" aria-selected="true"
+                    role="tab" aria-controls="weatherPanel">Weather</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="music-tab" data-toggle="tab" href="#musicPanel" aria-selected="true" role="tab"
+                    aria-controls="musicPanel">Music</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active container" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <h1 class="card-title mt-2 mb-2">Food For Thought</h1>
+                <h3 class="card-subtitle text-muted mb-2"></h3>
+                <p class="card-text mt-2" style="font-family: 'Times New Roman', Times, serif; font-size: 25px;"></p>
+            </div>
+
+            <div class="tab-pane fade show" id="weatherPanel" role="tabpanel" aria-labelledby="weather-tab">
+                <div class="container searchContainer mt-2">
+                    <div class="search card card-body">
+                        <h1>How's the Weather in Where?</h1>
+                        <p class="lead">Enter a location:</p>
+                        <form class="d-flex">
+                            <input class="form-control me-sm-2" type="text" placeholder="enter a city or a country..."
+                                id="location">
+                            <button class="btn btn-secondary my-2 my-sm-0" type="button"
+                                id="searchWeather">Search</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="container mt-2">
+                    <div class="card" style="background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #eeef);">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <img class="img-fluid mb-5" src="images/clear.png">
+                            </div>
+                            <div class="col-md-5 mt-3">
+                                <ul class="list-group modal-list-item">
+                                    <li class="list-group-item" id="locationInfo">Location:</li>
+                                    <li class="list-group-item" id="tempInfo">Temp:</li>
+                                    <li class="list-group-item" id="descriptionInfo">Description:</li>
+                                    <li class="list-group-item" id="feelsLikeInfo">Feels Like:</li>
+                                    <li class="list-group-item" id="highInfo">Today's High:</li>
+                                    <li class="list-group-item" id="humidityInfo">Humidity:</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+        </div>
+
+
+
+    </div>
+
+    <script>
+
+        class Quotes {
+            constructor() {
+                this.api_key = "kb0CDz6LPT/X+fmTl2HYjQ==7p2zsZxFeHquTmY1";
+                this.url = "https://api.api-ninjas.com/v1/quotes?category=happiness";
+            }
+
+            async setQuote() {
+                var category = 'happiness'
+                $.ajax({
+                    method: 'GET',
+                    url: 'https://api.api-ninjas.com/v1/quotes?category=' + category,
+                    headers: { 'X-Api-Key': this.api_key },
+                    contentType: 'application/json',
+                    success: function (result) {
+                        console.log(result);
+                    },
+                    error: function ajaxError(jqXHR) {
+                        console.error('Error: ', jqXHR.responseText);
+                    }
+                }).then(data => {
+                    $(".card-subtitle").html(data[0].author);
+                    $(".card-text").html(data[0].quote);
+                });
+            }
+        }
+
+        quote = new Quotes;
+        quote.setQuote();
+
+        $("#home-tab").click(function () {
+            quote.setQuote();
+        });
+
+
+        class Weather {
+            constructor() {
+                this.api_key = "6b8a18e5d8b44dfa8d65a91235fc4727";
+            }
+
+            async setWeatherData(location) {
+                const areaResponse = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${this.api_key}`, {
+                    method: "GET",
+                });
+                const areaData = await areaResponse.json();
+
+                let currentTemp = this.convertKToF(areaData.main.temp)
+                let feelsLikeTemp = this.convertKToF(areaData.main.feels_like);
+                let highTemp = this.convertKToF(areaData.main.temp_max);
+                $("#locationInfo").html(`Location:\t${areaData.name}`);
+                $("#tempInfo").html(`Temp:\t${currentTemp}°F`);
+                $("#descriptionInfo").html(`Description:\t${areaData.weather[0].description}`);
+                $("#feelsLikeInfo").html(`Feels Like:\t${feelsLikeTemp}°F`);
+                $("#highInfo").html(`Today's High:\t${highTemp}°F`);
+                $("#humidityInfo").html(`Humidity:\t${areaData.main.humidity}%`);
+
+                let weatherDesc = data.weather[0].main;
+                if (weatherDesc === "Clouds") {
+                    $(".weather-icon")
+                }
+            }
+
+            convertKToF(temp) {
+                temp = parseFloat(temp);
+                let result = ((temp - 273.15) * 1.8) + 32;
+                return result.toFixed(2);
+            }
+        }
+
+        weather = new Weather;
+
+
+        $(document).ready(async function getWeatherData() {
+            $("#searchWeather").click(function () {
+                var location = $("#location").val().trim();
+                weather.setWeatherData(location);
+            });
+        });
+
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+
+</html>

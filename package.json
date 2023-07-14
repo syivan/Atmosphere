@@ -15,6 +15,7 @@
   "author": "ivan sy",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "request": "^2.88.2"
   }
 }

@@ -1,0 +1,12 @@
+.card-view {
+    background: linear-gradient(135deg, #00feba, #5b548a);
+    color: #fff;
+    text-align: center;
+    max-width: 490px;
+}
+
+.modal-list-item {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-weight: bold;
+    color: azure;
+}
